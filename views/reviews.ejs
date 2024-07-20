@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews</title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        .star-border {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.2rem;
+            height: 1.2rem;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            background: black;
+        }
+
+        .main-star {
+            width: .9rem;
+            height: .9rem;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            background: white;
+        }
+
+        .cont {
+            box-shadow: 0rem 0rem 0.4rem;
+            border-radius: 2rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        img {
+            width: 11rem;
+            height: 11rem;
+            border-radius: 24rem;
+        }
+        #all-cont{
+            padding: 1rem;
+        }
+    </style>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+
+<body>
+    <div id="navbar">
+        <div style="width: 20%;"><img src="images\logo.png" id="logo" alt=""></div>
+        <div style="width: 60%; display: flex; justify-content: flex-end;">
+            <ul id="nav-opt-cont">
+                <li><a href="/" class="nav-opt" style="margin-right: 3rem;">Go to home</a></li>
+            </ul>
+        </div>
+    </div><br>
+    <div id="all-cont">
+        <h1>Our users experiences</h1><br>
+        <% for(let feed of feedbacks){ %>
+            <% if(feed.rating>= 3){ %>
+                <div class="cont">
+                    <div>
+                        <img src="<%=feed.profile%>" alt="">
+                    </div>
+                    <div style="width: 80%; margin-left: 20px;">
+                        <span class="name">
+                            <%=feed.name%> :
+                        </span><br><br>
+                        <div style="display: flex;">
+                            <div class="star-border"><span class="main-star"></span></div>
+                            <div class="star-border"><span class="main-star"></span></div>
+                            <div class="star-border"><span class="main-star"></span></div>
+                            <div class="star-border"><span class="main-star"></span></div>
+                            <div class="star-border"><span class="main-star"></span></div>
+                        </div>
+                        <span id="date&time">
+                            <%=feed.date%> , <%=feed.time%>
+                        </span>
+                        <p id="feedback">
+                            <%=feed.feedback%>
+                        </p>
+                        <input type="hidden" value="<%=feed.rating%>" class="ratings">
+                    </div>
+                </div>
+                <% } %>
+                    <% } %>
+    </div>
+    <script>
+        const cont = document.getElementsByClassName('cont');
+        const ratings = document.getElementsByClassName('ratings');
+        for (let i = 0; i < cont.length; i++) {
+            for (let j = 0; j < ratings[i].value; j++) {
+                cont[i].getElementsByClassName('main-star')[j].style.background = "gold";
+            }
+        }
+    </script>
+</body>
+
+</html>

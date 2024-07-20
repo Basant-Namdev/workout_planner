@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback form</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+        }
+
+        form {
+            border: 2px solid black;
+            width: 31rem;
+            height: calc(100vh - 1rem);
+        }
+
+        #send {
+            width: 27.3rem;
+            height: 3rem;
+            font-size: 1.2rem;
+            font-weight: 900;
+            background: cadetblue;
+            border-radius: 2rem;
+            box-shadow: 0.2rem 0.5rem;
+        }
+
+        #cont {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: calc(100vh - 1.4rem);
+        }
+
+        .star-border {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            width: 1.2rem;
+            height: 1.2rem;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            background: black;
+        }
+
+        .main-star {
+            width: .9rem;
+            height: .9rem;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            background: white;
+        }
+
+        #error {
+            color: red;
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: absolute;
+            top: 15.8rem;
+            left: 49rem;
+        }
+
+        #popup-cont {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            backdrop-filter: blur(7px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #popup {
+            width: 30%;
+            height: 30%;
+            padding: 2rem;
+            font-size: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            background-color: white;
+            box-shadow: 1rem 1rem 3.5rem;
+        }
+
+        #ok {
+            width: 20rem;
+            height: 2.7rem;
+            border-radius: 1.3rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="/profile/feedback" method="post" name="feedback-form" enctype="application/x-www-form-urlencoded">
+        <div id="cont">
+            <div style="padding: 2.5rem;background: cornflowerblue;color: white;">
+                <h1>Share your feedback!</h1>
+                <p style="font-size: 1.1rem;">Share your experiecne about us or give any suggestion to make us better.
+                </p>
+            </div>
+            <div>
+                <h2>Rate you experience : </h2>
+                <div
+                    style="display: flex; justify-content: space-around; border: 1px solid black;padding: .5rem;border-radius: 1rem;">
+                    <div class="star-border"><span class="main-star"></span></div>
+                    <div class="star-border"><span class="main-star"></span></div>
+                    <div class="star-border"><span class="main-star"></span></div>
+                    <div class="star-border"><span class="main-star"></span></div>
+                    <div class="star-border"><span class="main-star"></span></div>
+                </div><br>
+                <textarea name="feedbackBox" id="feedbackBox" cols="55" rows="12"
+                    placeholder="Describe your experiecne here...."
+                    style="background: lightgray;padding: 1rem; resize: none;" required></textarea><br><br>
+                <span style="font-size: 1.1rem;">Suggestion : </span><input type="radio" name="opt" id="suggestion"
+                    value="suggestion" style="cursor: pointer;" required>
+                <span style="font-size: 1.1rem;">Other : </span><input type="radio" name="opt" id="feedback"
+                    value="feedback" style="cursor: pointer;" required><br><br>
+                <input type="hidden" name="rating" value="0" id="rating">
+                <div id="error"></div>
+                <button type="submit" style="cursor: pointer;" id="send">Send Feedback</button>
+            </div>
+        </div>
+    </form>
+    <div id="popup-cont">
+        <div id="popup">
+            <p style="text-align: center;" id="popup-msg"></p>
+            <button id="ok" onclick="CloseOK()">OK</button>
+        </div>
+        <script src="https://kit.fontawesome.com/126cda3aca.js" crossorigin="anonymous"></script>
+        <script>
+            const star = document.getElementsByClassName('main-star');
+            for (let i = 0; i < star.length; i++) {
+                star[i].addEventListener('click', () => {
+                    for (let j = 0; j <= i; j++) {
+                        star[j].style.background = "gold";
+                    }
+                    for (let j = i + 1; j < star.length; j++) {
+                        star[j].style.background = "white";
+                    }
+                    document.getElementById('rating').value = i + 1;
+                });
+            }
+           
+            function CloseOK() {
+                document.getElementById('popup-cont').style.display = 'none';
+                window.location.href = '/profile/feedback';
+            }
+            function validateForm() {
+                let returnVal = true;
+                if (document.getElementById('rating').value == 0) {
+                    document.getElementById('error').innerHTML = "*rating can not be 0";
+                    returnVal = false;
+                }
+                return returnVal;
+            }
+            document.forms['feedback-form'].addEventListener('submit', async function (event) {
+                event.preventDefault(); // prevent default form submission
+                if (!validateForm()) {
+                    return; // if validation fails, exit the function
+                }
+                try {
+                    const rating = document.querySelector('#rating');
+                    const feedbackBox = document.querySelector('#feedbackBox');
+                    const reason = document.forms['feedback-form']['opt'];
+                    const response = await fetch('/profile/feedback', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            rating: rating.value,
+                            feedbackBox: feedbackBox.value,
+                            opt: reason.value,
+                        })
+                    })
+                    const result = await response.json(); // parse response as JSON
+                    if (result.success) {
+                        document.getElementById('popup-cont').style.display = "block";
+                        document.getElementById('popup-cont').style.display = "flex";
+                        document.getElementById('popup-msg').innerHTML = "Your feedback is submitted.";
+                    } else {
+                        document.getElementById('popup-cont').style.display = "block";
+                        document.getElementById('popup-cont').style.display = "flex";
+                        document.getElementById('popup-msg').innerHTML = "Error submitting feedback.";
+                    }
+                } catch (error) {
+                    document.getElementById('popup-cont').style.display = "block";
+                    document.getElementById('popup-cont').style.display = "flex";
+                    document.getElementById('popup-msg').innerHTML = "Something went wrong! try again later.";
+                    console.error('Error submitting form:', error);
+                }
+            })
+
+
+        </script>
+</body>
+
+</html>

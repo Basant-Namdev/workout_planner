@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout-tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive-style.css">
+</head>
+
+<body>
+    <div><img src="images/image 1.jpg" alt="" id="first-img"></div>
+
+    <div id="navbar">
+        <div style="width: 20%;"><img src="images\logo.png" id="logo" alt=""></div>
+        <div style="width: 60%;">
+            <ul id="nav-opt-cont">
+                <li><a href="/" class="nav-opt">Home</a></li>
+                <li><a href="#transformations" class="nav-opt">Transformations</a></li>
+                <li><a href="/reviews" class="nav-opt">Reviews</a></li>
+                <li><a href="#about-us" class="nav-opt">About</a></li>
+                <li><a href="#contact-us" class="nav-opt">Contact</a></li>
+                <li><button id="login" onclick="formPage()">Login / Sign up</button></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="over-image">
+        <div id="content-box">
+            <h1 style="font-size: 2.4rem;">UNLOCK YOUR TRUE POTENTIAL.</h1><br>
+            <p>Push harder than yesterday if you want a different tomorrow.</p>
+            <p>Fitness is not about being better than someone else. It’s about being better than you used to be.</p><br>
+            <p>Great things come from hard work and perseverance. No excuses.</p> <br>
+            <p>Create your free account and "Start your journey today"!</p>
+
+            <button id="sign-up" onclick="formPage()">Register now</button>
+        </div>
+    </div>
+
+    <div id="form-back" style="display: none;">
+        <div id="form-cont">
+            <div style="position:absolute;left: 7.5rem;"><button class="toggle-form" onclick="toggelSignUp()"
+                    id="top-sign-btn">Sign up</button><button class="toggle-form" onclick="toggelLogin()"
+                    id="top-log-btn" style="background: cadetblue;">Login</button></div>
+            <div>
+                <i class="fa-solid fa-xmark" id="cross" onclick="closeForm()"></i>
+                <form action="/login" name="login-form" method="post" id="login-form" enctype="application/x-www-form-urlencoded">
+                    <legend
+                        style="position: relative; top: -1.5rem; left: 5.1rem; font-size: 1.8rem; color: white;font-weight: bold;">
+                        Log in to your account</legend>
+                    <div id="log-email"><label for="email">E-mail : </label> <input type="email" id="email" name="username" class="inp-field"
+                        placeholder="Enter Email Address"required autofocus><br><br><br></div>
+                    <div id="log-password"><label for="pass">Password : </label> <input type="password" id="pass" name="password" class="inp-field"
+                        placeholder="Enter password"required >
+                        <i class="fa-solid fa-eye eye" onclick="eye()"></i><i class="fa-solid fa-eye-slash eye" onclick="eye()"></i>
+                        <br><span id="login-auth-failed"></span><br></div>
+                    <input type="submit" value="Login" id="log-submit" class="sign-up-btn"
+                        style="position: absolute; top: 10rem; left: 5rem;">
+                </form>
+                <form action="/signUp" name="sign-up-form" method="post" id="sign-up-form" enctype="application/x-www-form-urlencoded">
+                    <legend style="position: relative; top: -1.2rem; left: 6rem; font-size: 1.8rem; color: white;">Sign
+                        up for free</legend>
+                    <div id="sign-name"><label for="user-name">Name : </label> <input type="text" name="name" id="user-name" class="inp-field"
+                        placeholder="Enter Name"required> <span class="inpError"></span><br><br></div>
+                    <div id="sign-email"><label for="email-sign">E-mail : </label> <input type="email" name="username" id="email-sign" class="inp-field"
+                        placeholder="Enter Email Address"required> <span class="inpError"></span><br><br></div>
+                    <div id="sign-password"><label for="pass-sign">Password : </label> <input type="password" name="password" id="pass-sign" class="inp-field"
+                        placeholder="Enter password"required>
+                        <i class="fa-solid fa-eye sign-eye" onclick="signEye()"></i><i class="fa-solid fa-eye-slash sign-eye" onclick="signEye()"></i> <span class="inpError"></span><br><br></div>
+                    <div id="sign-cnfpassword"><label for="cnf-pass">Confirm password : </label> <input type="password" name="cnf-password" id="cnf-pass" class="inp-field" placeholder="confirm password" required> <span class="inpError"></span><br><br></div>
+                    <input type="submit" value="Sign up" class="sign-up-btn">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex;justify-content: center;"id="about-us">
+    <div id="about-content-container">
+        <div id="firstpara">
+            <div> <img src="/public/images/about1.png" alt="" id="about-img">
+            </div>
+            <div id="para">
+                <h1 style="text-align: center; font-size: 2.5rem;" class="about-paras">About us</h1>
+                <p class="about-paras">“Welcome to Pumpd: Your personalized fitness companion! At Pumpd, we’re passionate about making
+                    fitness accessible and enjoyable. Our platform offers a wide range of inbuilt exercise groups,
+                    allowing users to create customized workout plans that align with their fitness goals. Whether
+                    you’re into strength training, cardio, or flexibility exercises, Pumpd has you covered. But that’s
+                    not all! We empower users to take control by customizing their workouts. Adjust sets, reps, and
+                    exercises to suit your preferences and challenge yourself. And here’s the best part: we celebrate
+                    your commitment to daily exercise. Every squat, every plank, every mile—you’re making progress, and
+                    we’re cheering you on! Join the Pumpd community today and let’s crush those fitness goals together!”
+                    🏋️‍♂️💪</p>
+            </div>
+        </div>
+
+        <h2>Our Mission</h2>
+        <p class="about-paras">🌟 Empowering Personalized Fitness: We believe that fitness should be as unique as you are. That’s why we
+            offer a diverse range of inbuilt exercise groups, allowing you to create a workout plan that aligns with
+            your goals. Whether you’re aiming for strength gains, endurance, or flexibility, we’ve got the tools to help
+            you succeed.</p>
+        <p class="about-paras">🌟 Customization at Your Fingertips: Pumpd isn’t a one-size-fits-all solution. Customize your workouts by
+            adjusting sets, reps, and exercises. Want to focus on core strength? No problem. Prefer high-intensity
+            interval training? We’ve got you covered. Your fitness journey, your rules.</p>
+
+        <h2>Our Community</h2>
+        <p class="about-paras">🌟 You’re Not Alone: Join our vibrant community of fitness enthusiasts. Share your progress, celebrate
+            achievements, and find motivation in others’ success stories. We’re all in this together!</p>
+        <p class="about-paras">🌟 Daily Wins Matter: We appreciate every squat, every mile, and every drop of sweat. Consistency is key, and
+            we’re here to applaud your commitment to daily exercise. 🙌
+        </p><br>
+
+        <p class="about-paras">Get ready to take charge of your fitness journey? Sign up and let’s crush those goals together!
+            🏋️‍♂️💪</p>
+    </div>
+</div>
+<section id="transformations">
+<h1 style="text-align: center;font-size: 4rem;font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;margin: 2rem;">Results of our users</h1>
+<div id="transform">
+    <div class="transform-content">
+        <img src="/public/images/transform1.png" alt="" class="transform-img">
+        <p style="padding: 1rem;">this platform has been a game-changer. It provided the guidance and tools I needed to shed those extra pounds. With each click, I discovered new workouts, nutrition tips, and a supportive community. Now, as I look in the mirror, I see a transformed version of myself—a testament to the power of this platform. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur eos nemo quo expedita autem omnis, voluptatibus recusandae molestias tempore incidunt quam exercitationem rerum quasi, tempora hic praesentium quis! Saepe, nulla!
+        </p>
+    </div>
+    <div class="transform-content">
+        <img src="/public/images/transform2.jfif" alt="" class="transform-img">
+        <p style="padding: 1rem;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima explicabo, aliquam mollitia facilis asperiores tempore quaerat rem quos reiciendis suscipit numquam ex ea rerum et enim nihil similique consequuntur odit.this platform has been a game-changer. It provided the guidance and tools I needed to shed those extra pounds. With each click, I discovered new workouts, nutrition tips, and a supportive community. Now, as I look in the mirror, I see a transformed version of myself—a testament to the power of this platform</p>
+    </div>
+    <div class="transform-content">
+        <img src="/public/images/transform3.webp" alt="" class="transform-img">
+        <p style="padding: 1rem;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa eos quaerat numquam, corrupti obcaecati, error laboriosam provident aperiam quas dolor delectus sapiente impedit vitae esse consequatur odio neque fuga tenetur.this platform has been a game-changer. It provided the guidance and tools I needed to shed those extra pounds. With each click, I discovered new workouts, nutrition tips, and a supportive community. Now, as I look in the mirror, I see a transformed version of myself—a.</p>
+    </div>
+</div>
+</section>
+
+<h1 style="text-align: center;margin-top: 5rem;">Contact Us For Any Assistance</h1>
+<div id="contact-us">
+    <form action="/submit" name="contact-form" method="post" id="contact-form" >
+        <div><input type="text" name="first_name" placeholder="First-name"  style="height: 1.8rem;"required> <input type="text" name="first_name" placeholder="Last-name" style="height: 1.8rem;"></div>
+        <div><input type="email" name="email" placeholder="E-mail" class="contact-inp-field"required></div>
+        <div id="contact-no"><input type="text" name="contact-no" placeholder="Contact Number" class="contact-inp-field"required><span class="inpError"></span></div><br>
+        <div><textarea name="message"cols="30" rows="10" placeholder="Type your message here...." style="width: 21.3rem;resize: none;"required></textarea></div>
+        <button type="submit" id="contact-subButton">Submit</button>
+    </form>
+</div>
+
+<div id="form-submitted-cont">
+    <div id="form-submitted"><p style="text-align: center;" id="form-submitted-message">Your request has been taken. Our team will contact you shortly.</p>
+        <button onclick="CloseOK()">OK</button>
+    </div>
+</div>
+
+<footer style="text-align: center;font-size: 1.1rem;">
+    Copyright &copy; www.loremIpsun.com. All rights reserved!
+</footer>
+
+    <script src="index.js"></script>
+    <script src="https://kit.fontawesome.com/126cda3aca.js" crossorigin="anonymous"></script>
+</body>
+
+</html>

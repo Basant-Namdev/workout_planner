@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+        }
+
+        #form {
+            border: 2px solid black;
+            width: 31rem;
+            height: calc(100vh - 1rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        img {
+            width: 11rem;
+            height: 11rem;
+            border-radius: 24rem;
+            /* position: absolute; */
+        }
+
+        #profile-pic {
+            position: absolute;
+            top: 20.5rem;
+            right: 37.2rem;
+        }
+
+        .details {
+            position: relative;
+            right: -8rem;
+        }
+
+        .inp {
+            position: relative;
+            left: 4rem;
+            width: 12.7rem;
+        }
+
+        button {
+            position: relative;
+            right: -5.5rem;
+            width: 21.3rem;
+            height: 2.3rem;
+            font-size: 1.2rem;
+            font-weight: 900;
+            background: cadetblue;
+            border-radius: 2rem;
+            box-shadow: 0.2rem 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="form">
+        <legend style="text-align: center;">
+            <h1>Details</h1>
+        </legend>
+        <div style="display: flex;flex-direction: column; align-items: center;">
+            <img id="default-profile-pic" src=<% if(user.profile){ %> "<%=user.profile%>" <% }else{ %>
+                    "/public/images/blank profile.jpg" <% } %> alt=" Profile Image" /><br>
+        </div>
+        <div class="details">
+            Name &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp: <span class="inp">
+                <%=user.name%>
+            </span>
+        </div>
+        <div class="details">
+            <label for="gender">Gender &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp: </label><span class="inp">
+                <%=user.gender%>
+            </span>
+        </div>
+        <div class="details">
+            <label for="date">Date of birth : </label><span class="inp">
+                <%=user.dob%>
+            </span>
+        </div>
+        <div class="details">
+            <label for="weight">Weight &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp: </label><span class="inp">
+                <%=user.weight%> kg.
+            </span>
+        </div>
+        <div class="details">
+            <label for="height">Height &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp: </label><span class="inp">
+                <%=user.height%> feet
+            </span>
+        </div>
+        <div>
+            <a href="/profile/editDetails"><button>Edit details</button></a>
+        </div>
+    </div>
+</body>
+
+</html>

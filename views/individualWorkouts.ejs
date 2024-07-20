@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .exCont {
+            box-shadow: 0rem 0rem 0.4rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 1rem;
+            display: flex;
+            gap: 3em;
+            z-index: 2;
+        }
+
+        .start {
+            width: calc(100vw - 1rem);
+            height: 2.6rem;
+            font-size: 2rem;
+            font-weight: bold;
+            background: crimson;
+            padding: .2rem;
+            border-radius: 1.5rem;
+            position: fixed;
+            bottom: 0.7rem;
+            cursor: pointer;
+        }
+
+        #finish {
+            display: none;
+        }
+
+        .checkbox {
+            width: 2rem;
+            height: 2rem;
+        }
+
+        .break {
+            visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(11px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .break>h1 {
+            font-size: 7rem;
+            position: absolute;
+            top: 22%;
+        }
+
+        #clock {
+            font-size: 4rem;
+            position: absolute;
+            top: 44%;
+            right: 44.5%;
+        }
+
+        #cross {
+            position: absolute;
+            top: 10%;
+            right: 5%;
+            font-size: 3rem;
+            transition: all ease .3s;
+        }
+
+        #cross:hover {
+            scale: 1.4;
+            cursor: pointer;
+        }
+
+        .btn {
+            width: calc(100vw - 1rem);
+            height: 2.6rem;
+            font-size: 2rem;
+            font-weight: bold;
+            background: crimson;
+            padding: .2rem;
+            border-radius: 1.5rem;
+            position: fixed;
+            bottom: 0.7rem;
+            cursor: pointer;
+            display: none;
+        }
+
+        .inp {
+            display: inline;
+        }
+
+        #pre-button {
+            font-size: 2rem;
+            position: fixed;
+            left: 2rem;
+            top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <% if(body=="customs" ){ %>
+        <% for(let bodyPart of bodyParts){ %>
+            <div class="exCont">
+                <img src=<%=bodyPart.img%> width="180" height="170" alt="">
+                <div style="width: 80%;" class="inEx">
+                    <h3>Workout name : <%=bodyPart.workoutName%>
+                    </h3>
+                    <h3 style="display: inline;">description : </h3><span>
+                        <%=bodyPart.description%>
+                    </span><br><br>
+                </div>
+                <input type="checkbox" name="check" class="checkbox">
+            </div>
+            <% } %>
+                <div class="break">
+                    <h1>Break</h1>
+                    <h2 id="clock">00 : 59</h2>
+                </div>
+                <button id="submit-button" onclick="submitPage()" class="btn">Submit</button>
+                <button id="cnf" style="display: none;" class="btn">Confirm</button>
+                <button class="start" style="visibility: hidden;">Start</button>
+                <a href="<%=url%>"><button id="finish" class="start">Finish</button></a>
+                <% }else{ %>
+                    <div id="mainCont">
+                        <% for(let bodyPart of bodyParts){ %>
+                            <div class="exCont">
+                                <img src=<%=bodyPart.img%> width="180" height="170" alt="">
+                                <div>
+                                    <h3>Workout name : <%=bodyPart.workoutName%>
+                                    </h3>
+                                    <h3 style="display: inline;">description : </h3><span>
+                                        <%=bodyPart.description%>
+                                    </span>
+                                    <h3 class="sets">sets&reps : <%= bodyPart.sets %> * <%= bodyPart.reps %>
+                                    </h3>
+                                    <h3 class="timer">00:59</h3>
+                                </div>
+                            </div>
+                            <% } %>
+                                <div class="break">
+                                    <h1>Break</h1>
+                                    <h2 id="clock">00 : 00</h2>
+                                </div>
+                                <button class="start">Start</button>
+                                <a href="<%=url%>"><button id="finish" class="start">Finish</button></a>
+                    </div>
+                    <% } %>
+
+                        <script>
+                            let exCont = document.querySelectorAll('.exCont');
+                            const checkbox = document.querySelectorAll('.checkbox');
+                            const mainCont = document.getElementById('mainCont');
+                            const ExCont = document.getElementById('exCont');
+                            const submitButton = document.getElementById('submit-button');
+                            let checkCount = 0;
+
+                            // this is to select excercises in custom tab
+                            for (let i = 0; i < checkbox.length; i++) {
+                                checkbox[i].addEventListener('click', () => {
+                                    // it selects excercises in custom mode
+                                    if (checkbox[i].checked) {
+                                        checkCount++;
+                                        exCont[i].style.border = ".3rem solid green";
+                                    } else {
+                                        checkCount--;
+                                        exCont[i].style.border = "2px solid black";
+                                    }
+                                    // this is to hide/unhide submit button
+                                    if (checkCount != 0) {
+                                        submitButton.style.display = "block";
+                                    } else {
+                                        submitButton.style.display = "none";
+                                    }
+                                })
+                            }
+
+                            function submitPage() {
+                                for (let i = 0; i < checkbox.length; i++) {
+                                    if (!checkbox[i].checked) {
+                                        exCont[i].remove();
+                                        continue;
+                                    }
+                                    checkbox[i].style.display = "none";
+                                    exCont[i].style.border = "none";
+                                }
+                                submitButton.style.display = "none";
+                                document.querySelector('#cnf').style.display = "block";
+                                const inEx = document.getElementsByClassName('inEx');
+                                for (let i = 0; i < inEx.length; i++) {
+                                    for (let j = 0; j < 2; j++) {
+                                        let input = document.createElement('input');
+                                        let h3 = document.createElement('h3');
+                                        input.type = "number";
+                                        input.className = "inp";
+                                        h3.className = "inp1"
+                                        h3.style.display = "inline";
+                                        (j == 0) ? h3.innerText = "reps : " : h3.innerText = " sets : ";
+                                        inEx[i].appendChild(h3);
+                                        inEx[i].appendChild(input);
+                                    }
+                                }
+
+                                document.querySelector('#cnf').addEventListener('click', () => {
+                                    const inp = document.querySelectorAll('.inp');
+                                    let isValid = true;
+                                    for (let i = 0; i < inp.length; i++) {
+                                        if (!document.querySelectorAll('.inp')[i].value) {
+                                            alert("All input fields are mandatory to be filled");
+                                            isValid = false;
+                                            break;
+                                        }
+                                        if (document.querySelectorAll('.inp')[i].value <= 0 || isNaN(parseInt(document.querySelectorAll('.inp')[i].value)) || /\[.+\/\*-]|[^0-9]/.test(document.querySelectorAll('.inp')[i].value)) {
+                                            alert("All input fields must contain values greater than 0 and should only contain whole numbers.");
+                                            isValid = false;
+                                            break;
+                                        }
+                                    }
+                                    if (isValid) {
+                                        for (let i = 0; i < inp.length / 2; i++) {
+                                            let setRep = document.createElement('h3');
+                                            setRep.innerText = `sets&reps : ${inp[i * 2 + 1].value} * ${inp[i * 2].value}`;
+                                            setRep.className = "sets";
+                                            document.querySelectorAll('.inEx')[i].appendChild(setRep);
+                                            let timer = document.createElement('h3');
+                                            timer.innerText = "00 : 59";
+                                            timer.className = "timer";
+                                            document.querySelectorAll('.inEx')[i].appendChild(timer);
+                                        }
+                                        for (let i = 0; i < inp.length; i++) {
+                                            document.querySelector('.inp1').remove();
+                                            inp[i].remove();
+                                        }
+                                        document.querySelector('.start').style.visibility = "visible";
+                                        document.querySelector('#cnf').style.display = "none";
+
+                                    }
+                                })
+                            }
+
+                            // executable code after clicking on start button 
+
+                            const totalTime = 59;
+                            // this function updates time
+                            function updateTimer(clock, seconds, totalSets) {
+                                const displaySeconds = seconds < 10 ? `0${seconds}` : seconds;
+                                const displayTime = `00 : ${displaySeconds}`;
+                                clock.innerHTML = displayTime;
+                                // below line is to  hide break screen after particular time 
+                                if (seconds == 0) {
+                                    const breakCont = document.querySelector('.break');
+                                    breakCont.style.visibility = "hidden";
+                                }
+                            }
+                            // here the start function starts
+                            document.querySelector('.start').addEventListener('click', () => {
+                                exCont = document.querySelectorAll('.exCont');
+                                const sets = document.getElementsByClassName('sets');
+                                let totalSets = 0;
+                                for (let i = 0; i < sets.length; i++) {
+                                    totalSets = totalSets + parseInt(sets[i].textContent.split(" ")[2]);
+                                }
+                                // sets timer
+                                let i = 0;
+                                const timer = document.querySelectorAll(".timer");
+                                let time = 0;
+                                document.querySelector('.start').style.display = "none";
+
+                                // function to execute all excercises one by one
+                                function rest() {
+                                    let setsNumber = sets[i].textContent.split(" ")[2];
+                                    if (i != exCont.length - 1) {
+                                        time = (totalTime * 1000 * setsNumber + (setsNumber * 1000)) * 2;
+                                        setTimeout(rest, time);
+                                    }
+                                    for (let j = 0; j < exCont.length; j++) {
+                                        exCont[j].style.display = "none";
+                                    }
+                                    exCont[i].style.display = "block";
+                                    exCont[i].style.boxShadow = "none";
+                                    exCont[i].querySelector("img").style.width = "20rem";
+                                    exCont[i].querySelector("img").style.height = "20rem";
+                                    exCont[i].querySelector("h3").style.fontSize = "2rem";
+                                    exCont[i].querySelector("span").style.fontSize = "1rem";
+                                    let clock = timer[i];
+                                    clock.style.position = "absolute";
+                                    clock.style.right = "2rem";
+                                    clock.style.top = "1rem";
+                                    clock.style.fontSize = "2rem";
+                                    clock.style.border = "2px solid black ";
+                                    clock.style.borderRadius = "20px";
+                                    clock.style.padding = "10px";
+
+                                    let counter = 1;
+                                    // displays revese timer
+                                    function display(totalTime, clock) {
+                                        if (totalTime - 1 >= 0) {
+                                            // function recursively calls itself so that it can be executed till particular time(completes individual set)
+                                            setTimeout(() => {
+                                                display(totalTime - 1, clock);
+                                            }, 1000);
+                                        }
+                                        updateTimer(clock, totalTime, totalSets);
+                                    }
+                                    // this function is recursively called so that each excercise's all sets can be executed one by one
+                                    function intFunction() {
+                                        // it invokes break time after each set
+                                        if (totalSets > 0) {
+                                            setTimeout(breakFunc, totalTime * 1000 + 1000);
+                                        }
+                                        // function being recursively called
+                                        if (setsNumber > 1) {
+                                            setsNumber--;
+                                            setTimeout(intFunction, (totalTime * 1000 + 1000) * 2);
+                                        }
+                                        display(totalTime, clock);
+                                    }
+                                    setTimeout(intFunction, 0);
+                                    i++;
+                                    // break timer function
+                                    function breakFunc() {
+                                        totalSets--;
+                                        // finish button occurence 
+                                        if (totalSets == 0) {
+                                            document.getElementById('finish').style.display = "block";
+                                        } else {
+                                            // break function works here
+                                            const breakClock = document.getElementById("clock");
+                                            const breakCont = document.querySelector('.break');
+                                            breakCont.style.visibility = "visible";
+                                            display(totalTime, breakClock);
+                                        }
+                                    }
+
+                                }
+                                // this will change the workout
+                                setTimeout(rest, time);
+                            });
+
+
+                        </script>
+</body>
+
+</html>
