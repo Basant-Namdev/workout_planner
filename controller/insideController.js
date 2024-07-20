@@ -4,8 +4,15 @@ const path = require('path');
 const model = require('../model/userModel');
 const users = model.users;
 const feedbacks = model.feedbacks;
-const fs = require("fs");
+const cloudinary = require('cloudinary').v2;
 
+// cloudinary Configuration
+cloudinary.config({ 
+    cloud_name: process.env.CLOUD_NAME, 
+    api_key: process.env.API_KEY, 
+    api_secret: process.env.API_SECRET 
+});
+// to view the detail of the user when user is logged in
 exports.userDetails = async (req, res) => {
     try {
         const user = await users.findById(req.user);
@@ -22,7 +29,7 @@ exports.userDetails = async (req, res) => {
     }
 
 }
-
+// it is to send the edit detail from 
 exports.editDetails = async (req, res) => {
     try {
         const user = await users.findById(req.user);
@@ -39,35 +46,40 @@ exports.editDetails = async (req, res) => {
     }
 
 }
+// it stores the details got from editform 
 exports.saveDetails = async (req, res) => {
+    // Upload an image
+    const user = await users.findById(req.user);
+    const file = req.files.avatar;
+    let filepath;
+    await cloudinary.uploader.upload(file.tempFilePath,(err,result)=>{
+        if(err){
+            console.log(err);
+            return res.status(500).json({message:'internal server error.pls try again later.'
+            })
+        }else{
+                filepath = result.url;
+            }
+    })
     try {
-        // req.file is the `avatar` file
-        // req.body will hold the text fields, if there were any
-        const user = await users.findById(req.user);
-        if (req.file) {
-            fs.rename(`uploads/${req.file.filename}`, `uploads/${user.username}`, (err) => {
-                if (err) throw err;
-            });
-            const filepath = "/uploads/" + user.username;
-            user.profile = filepath;
-        }
+        user.profile = filepath;
         user.name = req.body.name;
         user.dob = (req.body.dob).split("T")[0];
         user.weight = req.body.weight;
         user.height = req.body.height;
         user.gender = req.body.gender;
         await user.save().then(() => { res.redirect("/profile/userDetails"); }).catch(err => {
-            res.sendStatus(500);
             console.log(err);
+            return res.sendStatus(500);
         })
 
     } catch (err) {
         console.log(err);
-        res.status(500).send({ message: 'internal server error.pls try again later.' })
+        res.status(500).json({ message: 'internal server error.pls try again later.' })
     }
 
 }
-
+// it send feedbackForm 
 exports.feedbackForm = (req, res) => {
     try {
         ejs.renderFile(path.resolve(__dirname, '../views/feedback.ejs'), (err, str) => {
@@ -83,7 +95,7 @@ exports.feedbackForm = (req, res) => {
     }
 
 };
-
+// it saves feedback in database
 exports.userFeedback = async (req, res) => {
     try {
         // date calculator

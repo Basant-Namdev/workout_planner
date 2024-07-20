@@ -10,7 +10,6 @@ router
     .post('/signUp', outsideController.signUp)
     .post('/login',outsideController.login)
     .get('/profile',outsideController.isAuth,outsideController.openProfile)
-    .get('/transformation',outsideController.transformation)
     .post('/submit',outsideController.formSubmission)
     .get('/profile/logout', outsideController.logOut)
     

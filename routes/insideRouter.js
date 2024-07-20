@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer'); 
-const upload = multer({ dest: 'uploads/' })
 const insideController = require('../controller/insideController');
 
 router
@@ -9,5 +7,5 @@ router
 .post('/feedback',insideController.userFeedback)
 .get('/userDetails',insideController.userDetails)
 .get('/editDetails',insideController.editDetails)
-.post('/save',upload.single('avatar'),insideController.saveDetails)
+.post('/save',insideController.saveDetails)
 exports.router = router;

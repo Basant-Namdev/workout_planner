@@ -8,6 +8,7 @@ const MongoStore = require('connect-mongo');
 const outsideRouter = require('./routes/outsideRouter');
 const workoutRouter = require('./routes/workoutRouter');
 const insideRouter = require('./routes/insideRouter');
+const fileUpload = require('express-fileupload')
 require('dotenv').config();
 const cors = require('cors');
 
@@ -23,7 +24,9 @@ async function main() {
 }
 exports.main = main;
 
-
+server.use(fileUpload({
+  useTempFiles: true,
+}))
 server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));

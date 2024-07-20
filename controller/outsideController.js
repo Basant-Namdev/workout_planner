@@ -10,6 +10,7 @@ const ejs = require('ejs');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 
+// contact us form submission code
 exports.formSubmission = (req, res) => {
   try {
     // handle form submission here
@@ -22,7 +23,7 @@ exports.formSubmission = (req, res) => {
   }
 
 }
-
+// it renders feedbacks saved in database on reviews page
 exports.reviews = async (req, res) => {
   try {
     const feedback = await feedbacks.find();
@@ -40,24 +41,7 @@ exports.reviews = async (req, res) => {
 
 }
 
-exports.transformation = async (req, res) => {
-  try {
-    const transform = await transformations.find();
-    ejs.renderFile(path.resolve(__dirname, '../views/transformations.ejs'), { transformations: transform }, (err, str) => {
-      if (!err) res.send(str);
-      else {
-        res.sendStatus(404);
-        console.log(err);
-      }
-    })
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ message: 'internal server error.pls try again later.' })
-  }
-
-}
-
-//signup & login auth
+// it is to create a user in db
 
 var salt = bcrypt.genSaltSync(parseInt(process.env.SALT));
 exports.signUp = async (req, res) => {
@@ -88,7 +72,7 @@ exports.signUp = async (req, res) => {
 
 
 };
-
+// user login function
 exports.login = (req, res, next) => {
   try {
     passport.authenticate('local', (err, user, info) => {
@@ -110,7 +94,7 @@ exports.login = (req, res, next) => {
     res.status(500).send({ message: 'internal server error.pls try again later.' })
   }
 }
-
+// middleware between login to profile
 exports.isAuth = (req, res, next) => {
   try {
     if (!req.user) {
@@ -123,7 +107,7 @@ exports.isAuth = (req, res, next) => {
   }
 
 }
-
+// it opens user profile
 exports.openProfile = async (req, res) => {
   try {
     const user = await users.findById(req.user)
@@ -136,7 +120,7 @@ exports.openProfile = async (req, res) => {
   }
 
 }
-
+// logout function
 exports.logOut = (req, res, next) => {
   try {
     req.logout(function (err) {
@@ -149,7 +133,7 @@ exports.logOut = (req, res, next) => {
   }
 
 };
-
+// passport initialization
 exports.initializePass = (passport) => {
   passport.use(new localStrategy(async function verify(username, password, done) {
     const user = await users.findOne({ username });

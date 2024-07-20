@@ -16,5 +16,4 @@ exports.biceps = mongoose.model('biceps', workoutSchema);
 exports.triceps = mongoose.model('triceps', workoutSchema);
 exports.legs = mongoose.model('legs', workoutSchema);
 exports.shoulder = mongoose.model('shoulder', workoutSchema);
-exports.cardio = mongoose.model('cardio', workoutSchema);
 exports.custom = mongoose.model('custom', workoutSchema);
