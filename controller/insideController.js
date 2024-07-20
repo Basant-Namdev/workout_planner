@@ -44,13 +44,13 @@ exports.saveDetails = async (req, res) => {
         // req.file is the `avatar` file
         // req.body will hold the text fields, if there were any
         const user = await users.findById(req.user);
-        if (req.file) {
-            fs.rename(`uploads/${req.file.filename}`, `uploads/${user.username}`, (err) => {
-                if (err) throw err;
-            });
-            const filepath = "/uploads/" + user.username;
-            user.profile = filepath;
-        }
+        // if (req.file) {
+        //     fs.rename(`uploads/${req.file.filename}`, `uploads/${user.username}`, (err) => {
+        //         if (err) throw err;
+        //     });
+        //     const filepath = "/uploads/" + user.username;
+        //     user.profile = filepath;
+        // }
         user.name = req.body.name;
         user.dob = (req.body.dob).split("T")[0];
         user.weight = req.body.weight;
