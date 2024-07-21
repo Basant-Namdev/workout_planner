@@ -17,7 +17,7 @@
         },
         {
             "src": "/reviews",
-            "dest": "views/reviews.ejs"
+            "dest": "server.js"
         },
         {
             "src": "/",
