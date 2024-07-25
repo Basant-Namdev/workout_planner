@@ -63,7 +63,7 @@
             <% if(feed.rating>= 3){ %>
                 <div class="cont">
                     <div>
-                        <img src="<%=feed.profile%>" alt="">
+                         <img id="profile-pic" src=<% if(feed.profile){ %> "<%=feed.profile%>" <% }else{ %> "/public/images/blank profile.jpg" <% } %> alt="">
                     </div>
                     <div style="width: 80%; margin-left: 20px;">
                         <span class="name">
