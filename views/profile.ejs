@@ -12,7 +12,7 @@
     <div id="container">
         <section id="wellcomeBox">
             <h1>Welcome back ,<span style="font-size: 3rem;">' <%=user.name%>'</span></h1>
-            <img id="profile-pic" src=<% if(user.profile){ %> "<%=user.profile%>" <% }else{ %> "/public/images/blank
+            <img id="profile-pic" src=<% if(user.profile != null){ %> "<%=user.profile%>" <% }else{ %> "/public/images/blank
                     profile.jpg" <% } %> alt=" Profile Image"/>
         </section>
         
