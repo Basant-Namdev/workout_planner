@@ -4,10 +4,10 @@ const path = require('path');
 const model = require('../model/userModel');
 const users = model.users;
 const feedbacks = model.feedbacks;
-const { MongoClient } = require('mongodb');
-const uri = process.env.MONGODB_URL;
-const client = new MongoClient(uri);
-const db = client.db('workout_planner');
+//const { MongoClient } = require('mongodb');
+//const uri = process.env.MONGODB_URL;
+//const client = new MongoClient(uri);
+//const db = client.db('workout_planner');
 const cloudinary = require('cloudinary').v2;
 
 // cloudinary Configuration
@@ -66,10 +66,10 @@ exports.saveDetails = async (req, res) => {
             }
     })
     try {
-        const sameUserFeedback = await db.collection(feedbacks).find({"userId" : req.user}).toArray();
-        for(let i = 0; i< sameUserFeedback;i++){
-            sameUserFeedback[i].profile = filepath;
-        }
+        //const sameUserFeedback = await db.collection(feedbacks).find({"userId" : req.user}).toArray();
+        //for(let i = 0; i< sameUserFeedback;i++){
+           // sameUserFeedback[i].profile = filepath;
+       // }
         user.profile = filepath;
         user.name = req.body.name;
         user.dob = (req.body.dob).split("T")[0];
