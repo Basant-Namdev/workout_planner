@@ -30,8 +30,8 @@ exports.reviews = async (req, res) => {
     ejs.renderFile(path.resolve(__dirname, '../views/reviews.ejs'), { feedbacks: feedback }, (err, str) => {
       if (!err) res.send(str);
       else {
-        res.sendStatus(404);
         console.log(err);
+        res.sendStatus(404);
       }
     })
   } catch (err) {

@@ -7,10 +7,10 @@ const feedbacks = model.feedbacks;
 const cloudinary = require('cloudinary').v2;
 
 // cloudinary Configuration
-cloudinary.config({ 
-    cloud_name: process.env.CLOUD_NAME, 
-    api_key: process.env.API_KEY, 
-    api_secret: process.env.API_SECRET 
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
 });
 // to view the detail of the user when user is logged in
 exports.userDetails = async (req, res) => {
@@ -50,19 +50,40 @@ exports.editDetails = async (req, res) => {
 exports.saveDetails = async (req, res) => {
     // Upload an image
     const user = await users.findById(req.user);
-    const file = req.files.avatar;
-    let filepath;
-    await cloudinary.uploader.upload(file.tempFilePath,(err,result)=>{
-        if(err){
-            console.log(err);
-            return res.status(500).json({message:'internal server error.pls try again later.'
-            })
-        }else{
+    const profileImg = user.profile.split('/')[7];
+    const profile = profileImg.slice(0, profileImg.lastIndexOf('.'));
+    
+    let filepath, file;
+    if (req.files) {
+        file = req.files.avatar;
+    }
+    if (file) {
+        // Upload to cloudinary
+        await cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json({
+                    message: 'internal server error.pls try again later.'
+                })
+            } else {
                 filepath = result.url;
+                user.profile = filepath;
             }
-    })
+        })
+    }
+    // updating all the places of profile
+    if (req.files) {
+        try {
+            const result = await feedbacks.updateMany(
+                { userId: req.user },
+                { $set: { profile: filepath } }
+            );
+            console.log(`Updated ${result.modifiedCount} documents`);
+        } catch (error) {
+            console.error('Error updating profile at all places:', error);
+        }
+    }
     try {
-        user.profile = filepath;
         user.name = req.body.name;
         user.dob = (req.body.dob).split("T")[0];
         user.weight = req.body.weight;
@@ -72,11 +93,23 @@ exports.saveDetails = async (req, res) => {
             console.log(err);
             return res.sendStatus(500);
         })
+        if (file) {
+            // delete image from cloudinary
+            cloudinary.uploader
+                .destroy(profile)
+                .then(() => {
+                    res.sendStatus(200)
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
 
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'internal server error.pls try again later.' })
     }
+
 
 }
 // it send feedbackForm 
