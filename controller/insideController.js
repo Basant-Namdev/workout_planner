@@ -4,10 +4,6 @@ const path = require('path');
 const model = require('../model/userModel');
 const users = model.users;
 const feedbacks = model.feedbacks;
-//const { MongoClient } = require('mongodb');
-//const uri = process.env.MONGODB_URL;
-//const client = new MongoClient(uri);
-//const db = client.db('workout_planner');
 const cloudinary = require('cloudinary').v2;
 
 // cloudinary Configuration
