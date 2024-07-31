@@ -54,6 +54,7 @@ exports.signUp = async (req, res) => {
 
 
     newUser.name = req.body.name;
+    newUser.profile = "/public/images/blank profile.jpg" ;
     newUser.username = req.body.username;
     newUser.password = hashedPassword.toString('hex');
     newUser.save()

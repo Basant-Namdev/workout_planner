@@ -50,8 +50,11 @@ exports.editDetails = async (req, res) => {
 exports.saveDetails = async (req, res) => {
     // Upload an image
     const user = await users.findById(req.user);
-    const profileImg = user.profile.split('/')[7];
-    const profile = profileImg.slice(0, profileImg.lastIndexOf('.'));
+    let profileImg,profileId;
+    if (user.profile.startsWith('http')) {
+         profileImg = user.profile.split('/')[7];
+         profileId = profileImg.slice(0, profileImg.lastIndexOf('.'));
+    }
     
     let filepath, file;
     if (req.files) {
@@ -72,11 +75,11 @@ exports.saveDetails = async (req, res) => {
         })
     }
     // updating all the places of profile
-    if (req.files) {
+    if (req.files ) {
         try {
             const result = await feedbacks.updateMany(
                 { userId: req.user },
-                { $set: { profile: filepath } }
+                { $set: { profile: filepath, name: req.body.name } },
             );
             console.log(`Updated ${result.modifiedCount} documents`);
         } catch (error) {
@@ -84,6 +87,12 @@ exports.saveDetails = async (req, res) => {
         }
     }
     try {
+        if (req.body.name != user.name ) {
+            await feedbacks.updateMany(
+                { userId: req.user },
+                { $set: { name: req.body.name } },
+            );
+        }   
         user.name = req.body.name;
         user.dob = (req.body.dob).split("T")[0];
         user.weight = req.body.weight;
@@ -93,12 +102,12 @@ exports.saveDetails = async (req, res) => {
             console.log(err);
             return res.sendStatus(500);
         })
-        if (file) {
+        if (profileId && file) {
             // delete image from cloudinary
             cloudinary.uploader
-                .destroy(profile)
+                .destroy(profileId)
                 .then(() => {
-                    res.sendStatus(200)
+                    console.log("image replaced");
                 })
                 .catch((error) => {
                     console.log(error);
